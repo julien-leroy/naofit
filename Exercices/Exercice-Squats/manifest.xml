@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<package uuid="fitness-b224b8">
+<package uuid="exercice-squats-34c286">
  <names>
-  <name lang="en_US">Fitness</name>
+  <name lang="en_US">Exercice-Squats</name>
  </names>
  <supportedLanguages>
   <language>en_US</language>
@@ -9,10 +9,5 @@
  <descriptionLanguages>
   <language>en_US</language>
  </descriptionLanguages>
- <contents>
-  <behaviorContent path="behavior_1">
-   <nature>interactive</nature>
-   <permissions/>
-  </behaviorContent>
- </contents>
+ <contents/>
 </package>
