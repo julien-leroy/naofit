@@ -1251,7 +1251,7 @@ class MyClass(GeneratedClass):
                             <Resource name="All motors" type="Lock" timeout="0" />
                             <Resource name="Stiffness" type="Lock" timeout="0" />
                         </Box>
-                        <Box name="Movement Tracker" id="4" localization="-1" tooltip="Turn the head in the direction of the greatest movement detected." x="923" y="182">
+                        <Box name="Movement Tracker" id="4" localization="-1" tooltip="Turn the head in the direction of the greatest movement detected." x="905" y="175">
                             <bitmap>media/images/box/tracker/tracker.png</bitmap>
                             <script language="4">
                                 <content>
@@ -1325,7 +1325,9 @@ class MyClass(GeneratedClass):
             pitch = self.currentJointAngles[1] +result[1]
             yaw = clip( yaw, -1.0, 1.0)
             pitch = clip( pitch, -0.45, 0.10)
-            ALMotion.setAngles("Head", [yaw, pitch], 0.1)]]>
+            ALMotion.setAngles("Head", [yaw, pitch], 0.1)
+
+        onInput_onStop(self)]]>
 </content>
                             </script>
                             <Input name="onLoad" type="1" type_size="1" nature="0" inner="1" tooltip="Signal sent when diagram is loaded." id="1" />
@@ -1370,7 +1372,7 @@ class MyClass(GeneratedClass):
                             <Input name="signal2" type="1" type_size="1" nature="1" inner="0" tooltip="Second signal to wait." id="3" />
                             <Output name="signalsReceived" type="1" type_size="1" nature="2" inner="0" tooltip="Signal sent when both inputs have been stimulated." id="4" />
                         </Box>
-                        <Box name="Say (2)" id="11" localization="8" tooltip="Say some text. Note that you must open the box to enter the text." x="1078" y="174">
+                        <Box name="Say (2)" id="11" localization="8" tooltip="Say some text. Note that you must open the box to enter the text." x="1032" y="175">
                             <bitmap>media/images/box/interaction/say.png</bitmap>
                             <script language="4">
                                 <content>
@@ -1685,6 +1687,42 @@ class MyClass(GeneratedClass):
                             </Timeline>
                             <Resource name="Speech" type="Lock" timeout="0" />
                         </Box>
+                        <Box name="Wait For Signals (2)" id="13" localization="8" tooltip="Wait for both inputs to be stimulated before stimulating its output." x="1310" y="210">
+                            <bitmap>media/images/box/wait.png</bitmap>
+                            <script language="4">
+                                <content>
+                                    <![CDATA[class MyClass(GeneratedClass):
+    def __init__(self):
+        GeneratedClass.__init__(self, False)
+
+    def onLoad(self):
+        self.ok = [False]*2
+
+    def onUnload(self):
+        #puts code for box cleanup here
+        ""
+
+    def onStart(self, nInput):
+        self.ok[nInput-1] = True
+        bOutput = True
+        for bOk in self.ok:
+            bOutput = bOutput and bOk
+        if( bOutput ):
+            self.ok = [False]*2
+            self.signalsReceived()
+
+    def onInput_signal1(self):
+        self.onStart(1)
+
+    def onInput_signal2(self):
+        self.onStart(2)]]>
+</content>
+                            </script>
+                            <Input name="onLoad" type="1" type_size="1" nature="0" inner="1" tooltip="Signal sent when Diagram is loaded." id="1" />
+                            <Input name="signal1" type="1" type_size="1" nature="1" inner="0" tooltip="First signal to wait." id="2" />
+                            <Input name="signal2" type="1" type_size="1" nature="1" inner="0" tooltip="Second signal to wait." id="3" />
+                            <Output name="signalsReceived" type="1" type_size="1" nature="2" inner="0" tooltip="Signal sent when both inputs have been stimulated." id="4" />
+                        </Box>
                         <Box name="Play Sound" id="12" localization="8" tooltip="Play a sound file. Select the file in parameters. The format of the file can be wav or ogg (on virtual robot) and also mp3 (on a real robot).&#x0A;&#x0A;Note: There can be some delay to play ogg or mp3 (on a robot) files. We advise you to use wav if&#x0A;you want a fast play of the file." x="925" y="312">
                             <bitmap>media/images/box/interaction/play_music.png</bitmap>
                             <script language="4">
@@ -1712,9 +1750,9 @@ class MyClass(GeneratedClass):
                             <Input name="onStart" type="1" type_size="1" nature="2" inner="0" tooltip="Starts the music." id="2" />
                             <Input name="onStop" type="1" type_size="1" nature="3" inner="0" tooltip="Stops the music." id="3" />
                             <Output name="onStopped" type="1" type_size="1" nature="1" inner="0" tooltip="Signal sent when box behavior is finished or stopped." id="4" />
-                            <Parameter name="File name" inherits_from_parent="0" content_type="4" value="/Kalimba.mp3" default_value="" tooltip="Name of the file you want to play.&#x0A;&#x0A;Note: You can click on the folder icon to browse the project content or import&#x0A;new files to the project." id="5" />
+                            <Parameter name="File name" inherits_from_parent="0" content_type="4" value="/tabata.mp3" default_value="" tooltip="Name of the file you want to play.&#x0A;&#x0A;Note: You can click on the folder icon to browse the project content or import&#x0A;new files to the project." id="5" />
                             <Parameter name="Begin position (s)" inherits_from_parent="0" content_type="2" value="0" default_value="0" min="0" max="600" tooltip="Position in seconds where the playing must start." id="6" />
-                            <Parameter name="Volume (%)" inherits_from_parent="0" content_type="1" value="100" default_value="100" min="0" max="100" tooltip="Volume the file is played with." id="7" />
+                            <Parameter name="Volume (%)" inherits_from_parent="0" content_type="1" value="40" default_value="100" min="0" max="100" tooltip="Volume the file is played with." id="7" />
                             <Parameter name="Balance L/R" inherits_from_parent="0" content_type="2" value="0" default_value="0" min="-1" max="1" tooltip="Value which determines if the sound is played more on the robot&apos;s left or right.&#x0A;You can particularly set it to:&#x0A;- -1 to play only on the left loudspeaker.&#x0A;- 0 to play on both loudspeakers.&#x0A;- 1 to play only on the right loudspeaker." id="8" />
                             <Parameter name="Play in loop" inherits_from_parent="0" content_type="0" value="0" default_value="0" tooltip="This parameter allows to play the file in loop. The playing will start each time at&#x0A;the beginning of the file." id="9" />
                             <Timeline enable="0">
@@ -1806,41 +1844,69 @@ class MyClass(GeneratedClass):
                             </Timeline>
                             <Resource name="Audio player" type="Lock" timeout="0" />
                         </Box>
-                        <Box name="Wait For Signals (2)" id="13" localization="8" tooltip="Wait for both inputs to be stimulated before stimulating its output." x="1310" y="210">
-                            <bitmap>media/images/box/wait.png</bitmap>
+                        <Box name="Take Picture" id="14" localization="8" tooltip="Take a picture with one of the cameras camera and store it in his memory in ~/recordings/cameras. The image format is JPG.&#x0A;&#x0A;V1.1.0&#x0A;" x="1157" y="173">
+                            <bitmap>media/images/box/interaction/picture.png</bitmap>
                             <script language="4">
                                 <content>
-                                    <![CDATA[class MyClass(GeneratedClass):
+                                    <![CDATA[import time
+
+class MyClass(GeneratedClass):
     def __init__(self):
         GeneratedClass.__init__(self, False)
+        self.resolutionMap = {
+            '160 x 120': 0,
+            '320 x 240': 1,
+            '640 x 480': 2,
+            '1280 x 960': 3
+        }
+        self.cameraMap = {
+            'Top': 0,
+            'Bottom': 1
+        }
+
+        self.recordFolder = "/home/nao/recordings/cameras/"
 
     def onLoad(self):
-        self.ok = [False]*2
+        self.bIsRunning = False
+        try:
+            self.photoCapture = ALProxy( "ALPhotoCapture" )
+        except Exception as e:
+            self.photoCapture = None
+            self.logger.error(e)
 
     def onUnload(self):
-        #puts code for box cleanup here
-        ""
+        pass
 
-    def onStart(self, nInput):
-        self.ok[nInput-1] = True
-        bOutput = True
-        for bOk in self.ok:
-            bOutput = bOutput and bOk
-        if( bOutput ):
-            self.ok = [False]*2
-            self.signalsReceived()
-
-    def onInput_signal1(self):
-        self.onStart(1)
-
-    def onInput_signal2(self):
-        self.onStart(2)]]>
+    def onInput_onStart(self):
+        if( self.bIsRunning ):
+            return
+        self.bIsRunning = True
+        resolution = self.resolutionMap[self.getParameter("Resolution")]
+        cameraID = self.cameraMap[self.getParameter("Camera")]
+        fileName = self.getParameter("File Name")
+        if self.photoCapture:
+            self.photoCapture.setResolution(resolution)
+            self.photoCapture.setCameraID(cameraID)
+            self.photoCapture.setPictureFormat("jpg")
+            self.photoCapture.takePicture( self.recordFolder, fileName )
+        self.bIsRunning = False
+        self.onStopped()]]>
 </content>
                             </script>
-                            <Input name="onLoad" type="1" type_size="1" nature="0" inner="1" tooltip="Signal sent when Diagram is loaded." id="1" />
-                            <Input name="signal1" type="1" type_size="1" nature="1" inner="0" tooltip="First signal to wait." id="2" />
-                            <Input name="signal2" type="1" type_size="1" nature="1" inner="0" tooltip="Second signal to wait." id="3" />
-                            <Output name="signalsReceived" type="1" type_size="1" nature="2" inner="0" tooltip="Signal sent when both inputs have been stimulated." id="4" />
+                            <Input name="onLoad" type="1" type_size="1" nature="0" inner="1" tooltip="Signal sent when diagram is loaded." id="1" />
+                            <Input name="onStart" type="1" type_size="1" nature="2" inner="0" tooltip="Box behavior starts when a signal is received on this input." id="2" />
+                            <Output name="onStopped" type="1" type_size="1" nature="1" inner="0" tooltip="Signal sent when box behavior is finished." id="3" />
+                            <Parameter name="Resolution" inherits_from_parent="0" content_type="3" value="640 x 480" default_value="640 x 480" custom_choice="0" tooltip="Image resolution." id="4">
+                                <Choice value="160 x 120" />
+                                <Choice value="320 x 240" />
+                                <Choice value="640 x 480" />
+                                <Choice value="1280 x 960" />
+                            </Parameter>
+                            <Parameter name="File Name" inherits_from_parent="0" content_type="3" value="image" default_value="image" custom_choice="0" tooltip="Name of the file without its extension." id="5" />
+                            <Parameter name="Camera" inherits_from_parent="0" content_type="3" value="Bottom" default_value="Top" custom_choice="0" tooltip="Enables to select the camera (Top or Bottom) that will take the picture." id="6">
+                                <Choice value="Top" />
+                                <Choice value="Bottom" />
+                            </Parameter>
                         </Box>
                         <Link inputowner="3" indexofinput="2" outputowner="1" indexofoutput="4" />
                         <Link inputowner="1" indexofinput="2" outputowner="5" indexofoutput="4" />
@@ -1852,13 +1918,14 @@ class MyClass(GeneratedClass):
                         <Link inputowner="4" indexofinput="2" outputowner="8" indexofoutput="4" />
                         <Link inputowner="0" indexofinput="4" outputowner="9" indexofoutput="4" />
                         <Link inputowner="11" indexofinput="2" outputowner="4" indexofoutput="4" />
-                        <Link inputowner="12" indexofinput="2" outputowner="8" indexofoutput="4" />
-                        <Link inputowner="13" indexofinput="2" outputowner="11" indexofoutput="4" />
-                        <Link inputowner="13" indexofinput="3" outputowner="12" indexofoutput="4" />
                         <Link inputowner="9" indexofinput="3" outputowner="13" indexofoutput="4" />
                         <Link inputowner="7" indexofinput="2" outputowner="8" indexofoutput="4" />
                         <Link inputowner="10" indexofinput="2" outputowner="7" indexofoutput="3" />
                         <Link inputowner="9" indexofinput="2" outputowner="10" indexofoutput="4" />
+                        <Link inputowner="12" indexofinput="2" outputowner="8" indexofoutput="4" />
+                        <Link inputowner="13" indexofinput="3" outputowner="12" indexofoutput="4" />
+                        <Link inputowner="14" indexofinput="2" outputowner="11" indexofoutput="4" />
+                        <Link inputowner="13" indexofinput="2" outputowner="14" indexofoutput="3" />
                     </Diagram>
                 </BehaviorKeyframe>
             </BehaviorLayer>
