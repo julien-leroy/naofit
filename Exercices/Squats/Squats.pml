@@ -7,9 +7,7 @@
     <Dialogs>
         <Dialog name="ExampleDialog" src="ExampleDialog/ExampleDialog.dlg" />
     </Dialogs>
-    <Resources>
-        <File name="tabata" src="tabata.mp3" />
-    </Resources>
+    <Resources />
     <Topics>
         <Topic name="ExampleDialog_enu" src="ExampleDialog/ExampleDialog_enu.top" topicName="ExampleDialog" language="enu" />
     </Topics>
