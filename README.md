@@ -1,5 +1,11 @@
 # NaoFit
-Fitness programme for NAO
+
+Programme de fitness avec Nao,
+L'application android permet de lancer les démonstrations et les programmes de sports.
+Dans le mode Demo, Nao vous montre comment éffectuer les exercices que vous choisissez.
+Dans le mode Workout, Nao vous motive pendant que vous faites l'exercice.
+
+<span class="mega-octicon octicon-alert"></span> Attention, Nao n'a pas encore sa license de coach sportif.
 
 ## Fitness programme contruction :
 
